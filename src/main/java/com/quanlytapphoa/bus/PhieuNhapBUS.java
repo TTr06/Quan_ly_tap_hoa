@@ -1,5 +1,6 @@
 package com.quanlytapphoa.bus;
 
+import com.quanlytapphoa.dao.DatabaseSync;
 import com.quanlytapphoa.model.ChiTietNhapHang;
 import com.quanlytapphoa.model.MatHang;
 import com.quanlytapphoa.model.NhaCungCap;
@@ -67,6 +68,7 @@ public class PhieuNhapBUS {
         }
 
         capNhatTongTien(phieuNhap, chiTietDaTao);
+        DatabaseSync.themPhieuNhap(phieuNhap, chiTietDaTao);
         capNhatTonKhoSauNhap(chiTietDaTao);
 
         dsPhieuNhapHang.add(phieuNhap);
@@ -134,6 +136,14 @@ public class PhieuNhapBUS {
             }
             if (matHang.getSoLuong() < chiTiet.getSoLuong()) {
                 throw new BusinessException("Khong the xoa phieu nhap vi ton kho hien tai khong du de tru lai");
+            }
+        }
+
+        DatabaseSync.xoaPhieuNhap(maPhieu, chiTietCanXoa);
+        for (ChiTietNhapHang chiTiet : chiTietCanXoa) {
+            MatHang matHang = matHangBUS.timTheoMa(chiTiet.getMaMatHang());
+            if (matHang == null) {
+                continue;
             }
             matHang.setSoLuong(matHang.getSoLuong() - chiTiet.getSoLuong());
         }

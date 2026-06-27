@@ -1,5 +1,6 @@
 package com.quanlytapphoa.bus;
 
+import com.quanlytapphoa.dao.DatabaseSync;
 import com.quanlytapphoa.model.ChiTietHoaDon;
 import com.quanlytapphoa.model.HoaDonBanHang;
 import com.quanlytapphoa.model.MatHang;
@@ -78,6 +79,7 @@ public class HoaDonBUS {
         }
 
         capNhatTongTien(hoaDon, chiTietDaTao);
+        DatabaseSync.themHoaDon(hoaDon, chiTietDaTao);
         truTonKho(soLuongTheoMatHang);
 
         dsHoaDonBanHang.add(hoaDon);
@@ -153,6 +155,7 @@ public class HoaDonBUS {
         }
 
         List<ChiTietHoaDon> chiTietCanHuy = layChiTietHoaDon(maHD);
+        DatabaseSync.huyHoaDon(maHD, chiTietCanHuy);
         for (ChiTietHoaDon chiTiet : chiTietCanHuy) {
             MatHang matHang = matHangBUS.timTheoMa(chiTiet.getMaMatHang());
             if (matHang != null) {

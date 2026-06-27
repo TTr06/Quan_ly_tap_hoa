@@ -1,5 +1,6 @@
 package com.quanlytapphoa.bus;
 
+import com.quanlytapphoa.dao.DatabaseSync;
 import com.quanlytapphoa.model.NhanVien;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class NhanVienBUS {
         if (timTheoMa(nhanVien.getMaNV()) != null) {
             throw new BusinessException("Ma nhan vien da ton tai");
         }
+        DatabaseSync.luuNhanVien(nhanVien);
         dsNhanVien.add(nhanVien);
     }
 
@@ -56,6 +58,7 @@ public class NhanVienBUS {
             throw new BusinessException("Khong tim thay nhan vien can sua");
         }
 
+        DatabaseSync.luuNhanVien(nhanVien);
         hienCo.setHoTen(nhanVien.getHoTen());
         hienCo.setSoDienThoai(nhanVien.getSoDienThoai());
         hienCo.setDiaChi(nhanVien.getDiaChi());
@@ -69,6 +72,7 @@ public class NhanVienBUS {
         if (nhanVien == null) {
             throw new BusinessException("Khong tim thay nhan vien can xoa");
         }
+        DatabaseSync.xoaNhanVien(maNV);
         nhanVien.setTrangThai(false);
     }
 

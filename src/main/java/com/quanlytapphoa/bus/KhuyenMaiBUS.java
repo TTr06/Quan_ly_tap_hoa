@@ -1,5 +1,6 @@
 package com.quanlytapphoa.bus;
 
+import com.quanlytapphoa.dao.DatabaseSync;
 import com.quanlytapphoa.model.KhuyenMai;
 import com.quanlytapphoa.model.MatHang;
 import java.util.ArrayList;
@@ -32,11 +33,27 @@ public class KhuyenMaiBUS {
         return null;
     }
 
+    public List<KhuyenMai> timKiem(String tuKhoa) {
+        String keyword = chuanHoa(tuKhoa).toLowerCase(Locale.ROOT);
+        List<KhuyenMai> ketQua = new ArrayList<KhuyenMai>();
+        for (KhuyenMai khuyenMai : dsKhuyenMai) {
+            if (keyword.length() == 0
+                    || coChua(khuyenMai.getMaKM(), keyword)
+                    || coChua(khuyenMai.getTenKM(), keyword)
+                    || coChua(khuyenMai.getLoaiKM(), keyword)
+                    || coChua(khuyenMai.getGiaTriKM(), keyword)) {
+                ketQua.add(khuyenMai);
+            }
+        }
+        return ketQua;
+    }
+
     public void themKhuyenMai(KhuyenMai khuyenMai) {
         kiemTraKhuyenMai(khuyenMai);
         if (timTheoMa(khuyenMai.getMaKM()) != null) {
             throw new BusinessException("Ma khuyen mai da ton tai");
         }
+        DatabaseSync.luuKhuyenMai(khuyenMai);
         dsKhuyenMai.add(khuyenMai);
     }
 
@@ -47,6 +64,7 @@ public class KhuyenMaiBUS {
             throw new BusinessException("Khong tim thay khuyen mai can sua");
         }
 
+        DatabaseSync.luuKhuyenMai(khuyenMai);
         hienCo.setTenKM(khuyenMai.getTenKM());
         hienCo.setLoaiKM(khuyenMai.getLoaiKM());
         hienCo.setGiaTriKM(khuyenMai.getGiaTriKM());
@@ -60,6 +78,7 @@ public class KhuyenMaiBUS {
         if (khuyenMai == null) {
             throw new BusinessException("Khong tim thay khuyen mai can bo");
         }
+        DatabaseSync.boKhuyenMai(maKM);
         khuyenMai.setTrangThai(false);
         for (MatHang matHang : dsMatHang) {
             if (maKM != null && maKM.equalsIgnoreCase(matHang.getMaKM())) {
@@ -79,6 +98,7 @@ public class KhuyenMaiBUS {
             throw new BusinessException("Khuyen mai khong ton tai hoac da ngung ap dung");
         }
 
+        DatabaseSync.ganKhuyenMaiChoSanPham(maMatHang, maKM);
         matHang.setKhuyenMai(khuyenMai);
     }
 
@@ -149,6 +169,10 @@ public class KhuyenMaiBUS {
         } catch (NumberFormatException ex) {
             return 0;
         }
+    }
+
+    private boolean coChua(String value, String keyword) {
+        return value != null && value.toLowerCase(Locale.ROOT).contains(keyword);
     }
 
     private String chuanHoa(String value) {

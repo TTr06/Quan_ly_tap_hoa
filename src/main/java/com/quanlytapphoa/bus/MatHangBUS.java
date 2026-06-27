@@ -1,5 +1,6 @@
 package com.quanlytapphoa.bus;
 
+import com.quanlytapphoa.dao.DatabaseSync;
 import com.quanlytapphoa.model.MatHang;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,7 @@ public class MatHangBUS {
         if (timTheoMa(matHang.getMaMatHang()) != null) {
             throw new BusinessException("Ma mat hang da ton tai");
         }
+        DatabaseSync.luuMatHang(matHang);
         dsMatHang.add(matHang);
     }
 
@@ -59,6 +61,7 @@ public class MatHangBUS {
             throw new BusinessException("Khong tim thay mat hang can sua");
         }
 
+        DatabaseSync.luuMatHang(matHang);
         hienCo.setTenMatHang(matHang.getTenMatHang());
         hienCo.setMaLoai(matHang.getMaLoai());
         hienCo.setMaKM(matHang.getMaKM());
@@ -75,6 +78,7 @@ public class MatHangBUS {
         if (matHang == null) {
             throw new BusinessException("Khong tim thay mat hang can xoa");
         }
+        DatabaseSync.xoaMatHang(maMatHang);
         matHang.setTrangThai(false);
     }
 
@@ -86,7 +90,14 @@ public class MatHangBUS {
         if (matHang == null) {
             throw new BusinessException("Khong tim thay mat hang");
         }
+        int soLuongCu = matHang.getSoLuong();
         matHang.setSoLuong(soLuongMoi);
+        try {
+            DatabaseSync.capNhatTonKho(matHang);
+        } catch (RuntimeException ex) {
+            matHang.setSoLuong(soLuongCu);
+            throw ex;
+        }
     }
 
     public void nhapThemSoLuong(String maMatHang, int soLuongNhap) {
@@ -97,7 +108,14 @@ public class MatHangBUS {
         if (soLuongNhap <= 0) {
             throw new BusinessException("So luong nhap phai lon hon 0");
         }
+        int soLuongCu = matHang.getSoLuong();
         matHang.setSoLuong(matHang.getSoLuong() + soLuongNhap);
+        try {
+            DatabaseSync.capNhatTonKho(matHang);
+        } catch (RuntimeException ex) {
+            matHang.setSoLuong(soLuongCu);
+            throw ex;
+        }
     }
 
     public void xuatSoLuong(String maMatHang, int soLuongXuat) {
@@ -111,7 +129,14 @@ public class MatHangBUS {
         if (matHang.getSoLuong() < soLuongXuat) {
             throw new BusinessException("So luong ton kho khong du");
         }
+        int soLuongCu = matHang.getSoLuong();
         matHang.setSoLuong(matHang.getSoLuong() - soLuongXuat);
+        try {
+            DatabaseSync.capNhatTonKho(matHang);
+        } catch (RuntimeException ex) {
+            matHang.setSoLuong(soLuongCu);
+            throw ex;
+        }
     }
 
     public boolean duTonKho(String maMatHang, int soLuongCanBan) {

@@ -1,5 +1,6 @@
 package com.quanlytapphoa.bus;
 
+import com.quanlytapphoa.dao.DatabaseSync;
 import com.quanlytapphoa.model.LoaiMatHang;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class LoaiMatHangBUS {
         if (timTheoMa(loaiMatHang.getMaLoai()) != null) {
             throw new BusinessException("Ma loai mat hang da ton tai");
         }
+        DatabaseSync.luuLoaiMatHang(loaiMatHang);
         dsLoaiMatHang.add(loaiMatHang);
     }
 
@@ -53,6 +55,7 @@ public class LoaiMatHangBUS {
         if (hienCo == null) {
             throw new BusinessException("Khong tim thay loai mat hang can sua");
         }
+        DatabaseSync.luuLoaiMatHang(loaiMatHang);
         hienCo.setTenLoai(loaiMatHang.getTenLoai());
         hienCo.setTrangThai(loaiMatHang.isTrangThai());
     }
@@ -62,6 +65,7 @@ public class LoaiMatHangBUS {
         if (loaiMatHang == null) {
             throw new BusinessException("Khong tim thay loai mat hang can xoa");
         }
+        DatabaseSync.xoaLoaiMatHang(maLoai);
         loaiMatHang.setTrangThai(false);
     }
 

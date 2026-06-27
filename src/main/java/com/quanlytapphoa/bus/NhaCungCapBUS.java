@@ -1,5 +1,6 @@
 package com.quanlytapphoa.bus;
 
+import com.quanlytapphoa.dao.DatabaseSync;
 import com.quanlytapphoa.model.NhaCungCap;
 import com.quanlytapphoa.model.PhieuNhapHang;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class NhaCungCapBUS {
         if (timTheoMa(nhaCungCap.getMaNCC()) != null) {
             throw new BusinessException("Ma nha cung cap da ton tai");
         }
+        DatabaseSync.luuNhaCungCap(nhaCungCap);
         dsNhaCungCap.add(nhaCungCap);
     }
 
@@ -59,6 +61,7 @@ public class NhaCungCapBUS {
             throw new BusinessException("Khong tim thay nha cung cap can sua");
         }
 
+        DatabaseSync.luuNhaCungCap(nhaCungCap);
         hienCo.setTenNCC(nhaCungCap.getTenNCC());
         hienCo.setDiaChi(nhaCungCap.getDiaChi());
         hienCo.setSoDienThoai(nhaCungCap.getSoDienThoai());
@@ -73,6 +76,7 @@ public class NhaCungCapBUS {
         if (!lichSuDatHang(maNCC).isEmpty()) {
             throw new BusinessException("Khong the xoa nha cung cap da co lich su dat hang");
         }
+        DatabaseSync.xoaNhaCungCap(maNCC);
         dsNhaCungCap.remove(nhaCungCap);
     }
 

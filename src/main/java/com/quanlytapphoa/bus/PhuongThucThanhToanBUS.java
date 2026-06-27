@@ -1,5 +1,6 @@
 package com.quanlytapphoa.bus;
 
+import com.quanlytapphoa.dao.DatabaseSync;
 import com.quanlytapphoa.model.PhuongThucThanhToan;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class PhuongThucThanhToanBUS {
         if (timTheoMa(phuongThuc.getMaPT()) != null) {
             throw new BusinessException("Ma phuong thuc thanh toan da ton tai");
         }
+        DatabaseSync.luuPhuongThucThanhToan(phuongThuc);
         dsPhuongThucThanhToan.add(phuongThuc);
     }
 
@@ -51,6 +53,7 @@ public class PhuongThucThanhToanBUS {
         if (hienCo == null) {
             throw new BusinessException("Khong tim thay phuong thuc thanh toan can sua");
         }
+        DatabaseSync.luuPhuongThucThanhToan(phuongThuc);
         hienCo.setTenPT(phuongThuc.getTenPT());
         hienCo.setMoTa(phuongThuc.getMoTa());
         hienCo.setTrangThai(phuongThuc.isTrangThai());
@@ -61,6 +64,7 @@ public class PhuongThucThanhToanBUS {
         if (phuongThuc == null) {
             throw new BusinessException("Khong tim thay phuong thuc thanh toan can xoa");
         }
+        DatabaseSync.xoaPhuongThucThanhToan(maPT);
         phuongThuc.setTrangThai(false);
     }
 

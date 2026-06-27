@@ -10,8 +10,8 @@ import com.quanlytapphoa.bus.NhanVienBUS;
 import com.quanlytapphoa.bus.NhaCungCapBUS;
 import com.quanlytapphoa.bus.PhieuNhapBUS;
 import com.quanlytapphoa.bus.PhuongThucThanhToanBUS;
-import com.quanlytapphoa.dao.FakeDatabase;
-import com.quanlytapphoa.model.BaoCao;
+import com.quanlytapphoa.dao.DatabaseSync;
+import com.quanlytapphoa.dao.SqlServerDatabase;
 import com.quanlytapphoa.model.ChiTietHoaDon;
 import com.quanlytapphoa.model.ChiTietNhapHang;
 import com.quanlytapphoa.model.HoaDonBanHang;
@@ -38,11 +38,10 @@ public class App {
     public static final List<ChiTietHoaDon> DS_CHI_TIET_HOA_DON = new ArrayList<ChiTietHoaDon>();
     public static final List<PhieuNhapHang> DS_PHIEU_NHAP_HANG = new ArrayList<PhieuNhapHang>();
     public static final List<ChiTietNhapHang> DS_CHI_TIET_NHAP_HANG = new ArrayList<ChiTietNhapHang>();
-    public static final List<BaoCao> DS_BAO_CAO = new ArrayList<BaoCao>();
     public static final List<TaiKhoan> DS_TAI_KHOAN = new ArrayList<TaiKhoan>();
 
     public static void main(String[] args) {
-        napDuLieuTuDatabase();
+        khoiTaoDuLieu();
 
         AuthBUS authBUS = new AuthBUS(DS_TAI_KHOAN);
         LoaiMatHangBUS loaiMatHangBUS = new LoaiMatHangBUS(DS_LOAI_MAT_HANG);
@@ -88,9 +87,19 @@ public class App {
         consoleUI.start();
     }
 
-    private static void napDuLieuTuDatabase() {
-        FakeDatabase database = new FakeDatabase();
+    public static void khoiTaoDuLieu() {
+        if (!DS_TAI_KHOAN.isEmpty() || !DS_MAT_HANG.isEmpty()) {
+            return;
+        }
+        napDuLieuTuDatabase();
+    }
 
+    public static void napDuLieuTuDatabase() {
+        xoaDuLieuDangCo();
+        napDuLieuTuSqlServer();
+    }
+
+    private static void xoaDuLieuDangCo() {
         DS_LOAI_MAT_HANG.clear();
         DS_MAT_HANG.clear();
         DS_KHUYEN_MAI.clear();
@@ -101,8 +110,12 @@ public class App {
         DS_CHI_TIET_HOA_DON.clear();
         DS_PHIEU_NHAP_HANG.clear();
         DS_CHI_TIET_NHAP_HANG.clear();
-        DS_BAO_CAO.clear();
         DS_TAI_KHOAN.clear();
+    }
+
+    private static void napDuLieuTuSqlServer() {
+        SqlServerDatabase database = new SqlServerDatabase();
+        database.kiemTraKetNoi();
 
         DS_LOAI_MAT_HANG.addAll(database.layDanhSachLoaiMatHang());
         DS_KHUYEN_MAI.addAll(database.layDanhSachKhuyenMai());
@@ -110,11 +123,12 @@ public class App {
         DS_NHA_CUNG_CAP.addAll(database.layDanhSachNhaCungCap());
         DS_NHAN_VIEN.addAll(database.layDanhSachNhanVien());
         DS_PHUONG_THUC_THANH_TOAN.addAll(database.layDanhSachPhuongThucThanhToan());
-        DS_HOA_DON_BAN_HANG.addAll(database.layDanhSachHoaDonBanHang());
+        DS_HOA_DON_BAN_HANG.addAll(database.layDanhSachHoaDonBanHang(DS_NHAN_VIEN, DS_PHUONG_THUC_THANH_TOAN));
         DS_CHI_TIET_HOA_DON.addAll(database.layDanhSachChiTietHoaDon());
-        DS_PHIEU_NHAP_HANG.addAll(database.layDanhSachPhieuNhapHang());
+        DS_PHIEU_NHAP_HANG.addAll(database.layDanhSachPhieuNhapHang(DS_NHA_CUNG_CAP, DS_NHAN_VIEN));
         DS_CHI_TIET_NHAP_HANG.addAll(database.layDanhSachChiTietNhapHang());
-        DS_BAO_CAO.addAll(database.layDanhSachBaoCao());
         DS_TAI_KHOAN.addAll(database.layDanhSachTaiKhoan());
+
+        DatabaseSync.enable(database);
     }
 }
