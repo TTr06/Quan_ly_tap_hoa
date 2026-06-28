@@ -125,15 +125,12 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jLabel2" min="-2" pref="91" max="-2" attributes="0"/>
-                              <Component id="jLabel3" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
-                              <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jPasswordField1" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jButton1" pref="550" max="32767" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jLabel2" min="-2" pref="91" max="-2" attributes="0"/>
+                          <Component id="jLabel3" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
+                          <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jPasswordField1" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jButton1" pref="550" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -151,10 +148,8 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jPasswordField1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="85" max="32767" attributes="0"/>
+                      <EmptySpace pref="126" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -196,11 +191,6 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
               </Events>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox1">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Nh&#x1edb; m&#x1ead;t kh&#x1ea9;u cho l&#x1ea7;n sau &#x111;&#x103;ng nh&#x1ead;p"/>
-              </Properties>
             </Component>
           </SubComponents>
         </Container>
