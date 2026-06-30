@@ -1,15 +1,5 @@
 package com.quanlytapphoa;
 
-import com.quanlytapphoa.bus.AuthBUS;
-import com.quanlytapphoa.bus.BaoCaoBUS;
-import com.quanlytapphoa.bus.HoaDonBUS;
-import com.quanlytapphoa.bus.KhuyenMaiBUS;
-import com.quanlytapphoa.bus.LoaiMatHangBUS;
-import com.quanlytapphoa.bus.MatHangBUS;
-import com.quanlytapphoa.bus.NhanVienBUS;
-import com.quanlytapphoa.bus.NhaCungCapBUS;
-import com.quanlytapphoa.bus.PhieuNhapBUS;
-import com.quanlytapphoa.bus.PhuongThucThanhToanBUS;
 import com.quanlytapphoa.dao.DatabaseSync;
 import com.quanlytapphoa.dao.SqlServerDatabase;
 import com.quanlytapphoa.model.ChiTietHoaDon;
@@ -23,7 +13,6 @@ import com.quanlytapphoa.model.NhanVien;
 import com.quanlytapphoa.model.PhieuNhapHang;
 import com.quanlytapphoa.model.PhuongThucThanhToan;
 import com.quanlytapphoa.model.TaiKhoan;
-import com.quanlytapphoa.ui.ConsoleUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,53 +28,6 @@ public class App {
     public static final List<PhieuNhapHang> DS_PHIEU_NHAP_HANG = new ArrayList<PhieuNhapHang>();
     public static final List<ChiTietNhapHang> DS_CHI_TIET_NHAP_HANG = new ArrayList<ChiTietNhapHang>();
     public static final List<TaiKhoan> DS_TAI_KHOAN = new ArrayList<TaiKhoan>();
-
-    public static void main(String[] args) {
-        khoiTaoDuLieu();
-
-        AuthBUS authBUS = new AuthBUS(DS_TAI_KHOAN);
-        LoaiMatHangBUS loaiMatHangBUS = new LoaiMatHangBUS(DS_LOAI_MAT_HANG);
-        MatHangBUS matHangBUS = new MatHangBUS(DS_MAT_HANG);
-        NhanVienBUS nhanVienBUS = new NhanVienBUS(DS_NHAN_VIEN);
-        NhaCungCapBUS nhaCungCapBUS = new NhaCungCapBUS(DS_NHA_CUNG_CAP, DS_PHIEU_NHAP_HANG);
-        PhuongThucThanhToanBUS phuongThucThanhToanBUS = new PhuongThucThanhToanBUS(DS_PHUONG_THUC_THANH_TOAN);
-        KhuyenMaiBUS khuyenMaiBUS = new KhuyenMaiBUS(DS_KHUYEN_MAI, DS_MAT_HANG, matHangBUS);
-        HoaDonBUS hoaDonBUS = new HoaDonBUS(
-                DS_HOA_DON_BAN_HANG,
-                DS_CHI_TIET_HOA_DON,
-                matHangBUS,
-                nhanVienBUS,
-                phuongThucThanhToanBUS,
-                khuyenMaiBUS
-        );
-        PhieuNhapBUS phieuNhapBUS = new PhieuNhapBUS(
-                DS_PHIEU_NHAP_HANG,
-                DS_CHI_TIET_NHAP_HANG,
-                matHangBUS,
-                nhaCungCapBUS,
-                nhanVienBUS
-        );
-        BaoCaoBUS baoCaoBUS = new BaoCaoBUS(
-                DS_HOA_DON_BAN_HANG,
-                DS_CHI_TIET_HOA_DON,
-                DS_PHIEU_NHAP_HANG,
-                DS_MAT_HANG
-        );
-
-        ConsoleUI consoleUI = new ConsoleUI(
-                authBUS,
-                loaiMatHangBUS,
-                matHangBUS,
-                nhanVienBUS,
-                nhaCungCapBUS,
-                phuongThucThanhToanBUS,
-                khuyenMaiBUS,
-                hoaDonBUS,
-                phieuNhapBUS,
-                baoCaoBUS
-        );
-        consoleUI.start();
-    }
 
     public static void khoiTaoDuLieu() {
         if (!DS_TAI_KHOAN.isEmpty() || !DS_MAT_HANG.isEmpty()) {

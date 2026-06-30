@@ -4,3 +4,7 @@ dist/
 nbproject/private/
 *.class
 *.log
+
+# Maven provides the JDBC JAR; the tracked x64 authentication DLL is retained.
+sqljdbc_*.zip
+sqljdbc_*/
